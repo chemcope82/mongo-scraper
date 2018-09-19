@@ -30,9 +30,17 @@ app.get("/scrape", function(req, res){
 
             result.title = $(element).children("a").text();
             result.link = $(element).children("a").attr("href");
-        })
-    })
-})
+
+            db.Article.create(result).then(function(dbArticle){
+                console.log(dbArticle);
+            })
+            .catch(function(err){
+                return res.json(err);
+            });
+        });
+        res.send("Scrape complete");
+    });
+});
 
 app.listen(PORT, function(){
     console.log("App listening on Port " + PORT);
